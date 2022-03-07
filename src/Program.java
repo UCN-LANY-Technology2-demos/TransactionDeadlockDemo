@@ -9,6 +9,7 @@ public class Program {
 
 		CustomerOrderDeadlock example = new CustomerOrderDeadlock();
 
+		// T1 tries to update the customers order status
 		Thread t1 = new Thread("Transaction 1") {
 			public void run() {
 
@@ -21,6 +22,7 @@ public class Program {
 			}
 		};
 
+		// T2 tries to add an order to the system
 		Thread t2 = new Thread("Transaction 2") {
 			public void run() {
 

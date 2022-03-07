@@ -20,7 +20,7 @@ public class CustomerOrderDeadlock {
 
 		String updateCustomerOrderStatusSql = 
 				  "UPDATE Customers "
-				+ "SET LatestOrderStatus = ? "
+				+ "SET Status = ? "
 				+ "WHERE Id = ? ";
 
 		String selectOrdersSql = 
@@ -87,13 +87,13 @@ public class CustomerOrderDeadlock {
 				+ "VALUES (?, GETDATE(), ?, 'A')";
 
 		String selectCustomerSql = 
-				"SELECT Id, Name, 'A' as LatestOrderStatus "
+				"SELECT Id, Name, 'A' as Status "
 				+ "FROM Customers "
 				+ "WHERE Id = ?";
 
 		String updateCustomerSql = 
 				"UPDATE Customers "
-				+ "SET LatestOrderStatus = 'A' "
+				+ "SET Status = 'A' "
 				+ "WHERE Id = ? ";
 
 		try {

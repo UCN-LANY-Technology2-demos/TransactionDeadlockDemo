@@ -11,10 +11,10 @@ public abstract class Database {
 		try {
 			
 			SQLServerDataSource ds = new SQLServerDataSource();
-			ds.setUser("student");
+			ds.setUser("orderuser");
 			ds.setPassword("P@$$w0rd");
 			ds.setServerName("localhost\\sqlexpress");
-			ds.setDatabaseName("TheCoffeeBreak");
+			ds.setDatabaseName("TransactionDemo");
 			conn = ds.getConnection();
 
 			conn.setTransactionIsolation(isolationLevel);
