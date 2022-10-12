@@ -20,9 +20,7 @@ public abstract class DataContext {
 
 	public static Connection getConnection(int isolationLevel) throws SQLException {
 
-		Connection conn = null;
-
-		conn = getConnection();
+		Connection conn = getConnection();
 		conn.setTransactionIsolation(isolationLevel);
 		return conn;
 	}

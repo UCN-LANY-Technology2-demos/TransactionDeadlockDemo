@@ -31,14 +31,15 @@ public class T2 implements Runnable {
 
 		ResultSet record = selectStatement.executeQuery(sql);
 
-		if (record.next()) {
-
-			customer = new Customer(record.getInt(1), // Id
-					record.getString(2), // Name
-					record.getString(3) // LatestOrderStatus
+		while (record.next()) {
+			
+			customer = new Customer(record.getInt(1),  	 // Id
+								    record.getString(2), // Name
+								    record.getString(3)  // LatestOrderStatus
 			);
 		}
-				
+		record.close();
+		
 		return customer;
 	}
 
@@ -56,20 +57,20 @@ public class T2 implements Runnable {
 	public void run() {
 
 		try {
-			Connection conn = DataContext.getConnection();
+			Connection conn = DataContext.getConnection(Connection.TRANSACTION_READ_COMMITTED);
 			conn.setAutoCommit(false);
 
 			try {
 
 				DataContext.printSessionInfo(conn);
+				
+				insertOrder(conn); // X lock on Orders
 
-				insertOrder(conn);
-
-				Customer customer = selectCustomer(conn);
+				Customer customer = selectCustomer(conn); // S lock on Customers
 
 				System.out.println(customer);
 
-				updateCustomer(conn);
+				updateCustomer(conn); // X lock on Customers
 
 				conn.commit();
 				
@@ -80,12 +81,9 @@ public class T2 implements Runnable {
 				conn.rollback();
 				throw e;
 				
-			} finally {
-				
-				conn.setAutoCommit(true);
-			}
+			} 
 			
-		} catch (SQLException e1) {
+		} catch (Exception e1) {
 			
 			System.out.println(Thread.currentThread().getName() + ": ERROR! "+ e1.getMessage());			
 		}

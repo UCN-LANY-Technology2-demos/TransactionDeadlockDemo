@@ -26,19 +26,21 @@ public class T1 implements Runnable {
 
 		String selectOrdersSql = "SELECT * FROM Orders WHERE CustomerId = 1 ";
 
-		System.out.println(Thread.currentThread().getName() + " request S lock on CUSTOMERS");
+		System.out.println(Thread.currentThread().getName() + " request S lock on ORDERS");
 
 		Statement selectOrders = conn.createStatement();
-		ResultSet rows = selectOrders.executeQuery(selectOrdersSql);
+		ResultSet record = selectOrders.executeQuery(selectOrdersSql);
 
-		if (rows.next()) {
-			result = new Order(rows.getInt(1), // ORDER_ID
-					rows.getInt(2), // CUSTOMER_ID
-					rows.getDate(3), // DATE
-					rows.getFloat(4), // TOTAL
-					rows.getString(5) // STATUS
+		while (record.next()) {
+
+			result = new Order(record.getInt(1), // Id
+					record.getInt(2), // CustomerId
+					record.getDate(3), // Date
+					record.getFloat(4), // Total
+					record.getString(5) // Status
 			);
 		}
+		record.close();
 
 		return result;
 	}
@@ -47,35 +49,31 @@ public class T1 implements Runnable {
 	public void run() {
 
 		try {
-			Connection conn = DataContext.getConnection();
+			Connection conn = DataContext.getConnection(Connection.TRANSACTION_READ_COMMITTED);
 			conn.setAutoCommit(false);
 
 			try {
 
 				DataContext.printSessionInfo(conn);
 
-				updateCustomerOrderStatus(conn);
+				updateCustomerOrderStatus(conn); // X lock on Customers
 
-				Order order = selectOrder(conn);
+				Order order = selectOrder(conn); // S lock on Orders
 
 				System.out.println(order);
 
 				conn.commit();
-				
+
 				System.out.println(Thread.currentThread().getName() + " locks released");
 
 			} catch (SQLException e) {
-	
+
 				conn.rollback();
 				throw e;
-				
-			} finally {
-				
-				conn.setAutoCommit(true);
 			}
-		} catch (SQLException e1) {
- 
-			System.out.println(Thread.currentThread().getName() + ": ERROR! "+ e1.getMessage());
+		} catch (Exception e1) {
+
+			System.out.println(Thread.currentThread().getName() + ": ERROR! " + e1.getMessage());
 		}
 	}
 
