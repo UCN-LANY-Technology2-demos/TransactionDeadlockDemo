@@ -57,7 +57,9 @@ public class T1 implements Runnable {
 				DataContext.printSessionInfo(conn);
 
 				updateCustomerOrderStatus(conn); // X lock on Customers
+				
 
+				
 				Order order = selectOrder(conn); // S lock on Orders
 
 				System.out.println(order);

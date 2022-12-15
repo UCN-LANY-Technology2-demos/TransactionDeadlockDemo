@@ -12,7 +12,7 @@ public abstract class DataContext {
 		SQLServerDataSource ds = new SQLServerDataSource();
 		ds.setUser("student");
 		ds.setPassword("P@$$w0rd");
-		ds.setServerName("localhost\\sqlexpress");
+		ds.setServerName("192.168.56.101");
 		ds.setDatabaseName("TransactionDeadlockDemo");
 		return ds.getConnection();
 
