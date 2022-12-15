@@ -1,15 +1,13 @@
-import java.util.ArrayList;
+import java.sql.Connection;
 
 import database.DataContext;
-import model.Customer;
-import model.Order;
 
 public class Program {
 
 	public static void main(String[] args) {
 
-		Thread transaction1 = new Thread(new deadlockDemo.T1(), "T1");
-		Thread transaction2 = new Thread(new deadlockDemo.T2(), "T2");
+		Thread transaction1 = new Thread(new deadlockDemo.Transaction1(Connection.TRANSACTION_READ_UNCOMMITTED), "T1");
+		Thread transaction2 = new Thread(new deadlockDemo.Transaction2(Connection.TRANSACTION_READ_UNCOMMITTED), "T2");
 
 		transaction1.start();
 		transaction2.start();

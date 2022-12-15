@@ -7,7 +7,12 @@ import java.sql.Statement;
 import database.DataContext;
 import model.Order;
 
-public class T1 implements Runnable {
+public class Transaction1 extends TransactionBase implements Runnable {
+
+	public Transaction1(int isolationLevel) {
+		super(isolationLevel);
+		// nothing to see here...
+	}
 
 	public void updateCustomerOrderStatus(Connection conn) throws SQLException {
 
@@ -49,7 +54,7 @@ public class T1 implements Runnable {
 	public void run() {
 
 		try {
-			Connection conn = DataContext.getConnection(Connection.TRANSACTION_READ_COMMITTED);
+			Connection conn = DataContext.getConnection(this.isolationLevel);
 			conn.setAutoCommit(false);
 
 			try {

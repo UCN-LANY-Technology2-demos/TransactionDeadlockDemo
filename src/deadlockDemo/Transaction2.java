@@ -8,7 +8,12 @@ import java.sql.Statement;
 import database.DataContext;
 import model.Customer;
 
-public class T2 implements Runnable {
+public class Transaction2 extends TransactionBase implements Runnable {
+	
+	public Transaction2(int isolationLevel) {
+		super(isolationLevel);
+		// nothing to see here...
+	}
 
 	public void insertOrder(Connection conn) throws SQLException {
 		String sql = "INSERT INTO Orders VALUES (1, GETDATE(), 100, 'A')";
@@ -52,12 +57,13 @@ public class T2 implements Runnable {
 
 		updateStatement.execute(sql);
 	}
+	
 
 	@Override
 	public void run() {
 
 		try {
-			Connection conn = DataContext.getConnection(Connection.TRANSACTION_READ_COMMITTED);
+			Connection conn = DataContext.getConnection(isolationLevel);
 			conn.setAutoCommit(false);
 
 			try {
