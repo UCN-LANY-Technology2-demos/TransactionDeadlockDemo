@@ -10,12 +10,11 @@ public abstract class DataContext {
 	public static Connection getConnection() throws SQLServerException {
 
 		SQLServerDataSource ds = new SQLServerDataSource();
-		ds.setUser("student");
+		ds.setUser("sa");
 		ds.setPassword("P@$$w0rd");
 		ds.setServerName("192.168.56.101");
 		ds.setDatabaseName("TransactionDeadlockDemo");
 		return ds.getConnection();
-
 	}
 
 	public static Connection getConnection(int isolationLevel) throws SQLException {

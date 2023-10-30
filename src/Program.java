@@ -12,16 +12,6 @@ public class Program {
 		transaction1.start();
 		transaction2.start();
 
-		try {
-			
-			transaction1.join();
-			transaction2.join();
-			
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
-
-		DataContext.resetDatabase();
+//		DataContext.resetDatabase();
 	}
 }

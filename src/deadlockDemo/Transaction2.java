@@ -94,5 +94,4 @@ public class Transaction2 extends TransactionBase implements Runnable {
 			System.out.println(Thread.currentThread().getName() + ": ERROR! "+ e1.getMessage());			
 		}
 	}
-
 }

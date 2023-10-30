@@ -63,13 +63,13 @@ public class Transaction1 extends TransactionBase implements Runnable {
 
 				updateCustomerOrderStatus(conn); // X lock on Customers
 				
-
+				conn.commit();
 				
 				Order order = selectOrder(conn); // S lock on Orders
 
 				System.out.println(order);
 
-				conn.commit();
+
 
 				System.out.println(Thread.currentThread().getName() + " locks released");
 
